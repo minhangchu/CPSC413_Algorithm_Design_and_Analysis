@@ -1,0 +1,292 @@
+\documentclass{cpsc413Solutions}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\coursetitle{Design and Analysis of Algorithms}
+\courselabel{CPSC 413}
+\exercisesheet{Problem Set \#[4]}{}
+\student{Minh Hang Chu - 30074056}
+\semester{Winter 2020}
+
+\begin{document}
+
+\team{Minh Hang Chu}
+
+\sources{
+Lecture Notes,
+Algorithm Design textbook
+}
+
+\begin{problemlist}
+\pbitem [Prove the greedy algorithm in class always yields an optimal solution]
+\begin{problem}
+\begin{answer}
+Recall the the greedy algorithm in class, the algorithm always picks the highest coin domination.
+
+For this question, the domination are of the form $c^0, c^1, \dots, c^k$ for some integer $k \geq 1$.\\
+We use "stay-ahead" method to prove that the greedy algorithm is optimal for these coin denominations.
+
+Let $n_0, n_1, n_2, \dots, n_k$ be the number of coin denominations $c_0, c_1, c_2, \dots, c_k$ is the solution of Greedy algorithm.
+
+Let $n'_0, n'_1, n'_2, \dots, n'_k$ be the number of coin denominations $c_0, c_1, c_2, \dots, c_k$ is the optimal solution.
+
+Suppose that the greedy algorithm solution is different from the optimal solution.
+
+Let $p$ is the largest index, $k \in \{0,1,\dots, k\}$ such that $n_p \neq n'_p$ so that $n_q = n'_q$ for $p<q<k$.
+
+Then we have $n_p > n'_p$ because the greedy algorithm would have chosen the largest number of coins possible. That implies:
+
+\begin{equation*}
+    \sum_{i=0}^{p-1}n'_ic_i \geq c_p
+\end{equation*}
+
+We know this since the optimal solution must make up for at least one coin of domination $c_p$. Note that any optimal solutions must satisfy:
+\begin{itemize}
+    \item $n'_0 \equiv x$ mod $c^1$ (if $n'_0 \geq c^1$, the optimal solution is not optimal because we can use a $c^1$ coin domination instead).
+    \item $n'_1 \equiv x$ mod $c^2$
+    \item $n'_2 \equiv x$ mod $c^3$
+    \item this pattern is similar for other domination. We have $n'_{p-1} \equiv x$ mod $c^p$.
+\end{itemize}
+
+We also have: the coins $c_0, c_1, \dots, c_k$ have domination of $c^0, c^1, \dots, c^k$. 
+Thus, to satisfy the above sum equation, the most optimal solution we can make up $c_p$ is using $c$ numbers of $c_{p-1}$ coins. Then $c_p = c(c^{p-1})$. However, we can use 1 coin domination $c_p$ instead of $c$ coins domination $c_{p-1}$. Hence, this contradicts the assumption.
+
+Therefore, we have contradiction, derive that the greedy solution must be the same as optimal solution.
+
+
+\end{answer}
+\end{problem}
+
+
+\pbitem [Problem 5 page 190]
+\begin{problem}
+\begin{answer}
+\begin{enumerate}
+    \item Formal definition of the problem
+    
+    Pre-conditions:
+    \begin{itemize}
+        \item An array $Houses$ of size $n \in \mathbb{N}$. Each index $Houses[i]$ representing house at $i$ position on the road. We assume that there are no repeating number in the list.
+    \end{itemize}   
+
+    Post-conditions:
+    \begin{itemize}
+        \item An array $baseStations$ of size $k$ as output, where each $baseStations[i]$ represents the position of the $i$th cell phone base stations we place for $ 0\leq i < k$. The size $k$ denotes the numbers of cellphone stations required to cover all houses. The elements in $baseStations$ are in ascending order, which means $baseStations[i] < baseStations[i+1]$.
+        \item If there is no house on the street, we do not need to place any stations and return an empty list.
+    \end{itemize}
+    
+    \item Greedy algorithm that finds an optimal solution.
+    
+\begin{lstlisting}[numbers=left]
+placeCellphoneStation(Houses)
+    baseStations = []
+    coverage = - infinity
+    if (Houses.size() = 0) 
+        return baseStations
+    sortedHouses = sortHousePositionFromLeftToRight(Houses)
+    i = 0
+    while (i < Houses.size()) 
+        if (i > coverage) then 
+            baseStations.push(sortedHouses[i] +4)
+            coverage = sortedHouses[i] + 8
+        end if
+    i++
+    end while
+    return baseStations
+    
+\end{lstlisting}
+
+    \item Explain why my solution is optimal
+    \begin{itemize}
+        \item If there is no house on the street, we do not need to place the cellphone base station. Thus, the algorithm halts and returns an empty list of cellphone stations.
+        \item If there are houses on the street, the algorithm will sort the array to ascending order. After sorting this array, we get a new array with ordered houses from left to right. The leftmost house will be the first element in the array.\\
+        Then we start the loop through every house in the sorted array. If there is the house outside coverage range, we place a station 4 miles away from the house to the right.If the house is inside the range, if statement is not executed.\\
+        In this way, we make sure all the house on the street are covered. We only place new cellphone station if a house is not covered. We place 4 miles away from uncovered house to maximize coverage range.\\
+        We use coverage variable to track coverage of a station and check if the houses are in that range.\\
+        Finally, we return the list of locations of cellphone base stations.
+    \end{itemize}
+    
+    \item  Is the solution returned by the algorithm the only possible solution for all possible inputs?
+    
+    No the solution returned by the algorithm is not the only possible solution.
+    
+    Let's look at the following example.
+    
+    Suppose we have houses $Houses = \{-2,8,11\}$.
+    
+    First possible solution from the algorithm in part b:
+    \begin{itemize}
+        \item   Tracing through the algorithm, $sortedHouses = \{-2,8,11\}$ and we loop through every houses.
+        \item From west to east, we start at house position -2 which is not in coverage range, the station will be placed at $-2+4=2$ position. Now, coverage range will reach position $-2+8=6$.
+        \item The next house is at position 8, which is not covered. We place another stations at position $8+4=12$ and coverage range reaches $8+8=16$
+        \item The last house at position 11, which is already in coverage range.
+        \item Hence, the base stations are position 2 and 12.
+    \end{itemize}
+    
+    Another possible solution could be made if we start with order from east to west. For this approach, the algorithm is similar but in different direction.
+    \begin{itemize}
+        \item We get the same input and sort the array to descending order then $sortedHouses = \{11,8,-2\}$.
+        \item We also loop through the list, however, the first iteration, we start at house at position 11. We place station at $11-4=7$, and coverage range will reach $11-8=3$.
+        \item The next house at position 8 is already covered.
+        \item The next house at position -2, which is smaller than 3. We place the station at position $-2-4=-6$.
+        \item Hence, from east to west, we get base stations locations are -6 and 7.
+    \end{itemize}
+    
+    We can see from this example, both solutions are optimal with 2 base stations for possible inputs. Hence, the solution returned by the algorithm is not the only possible solution.
+    
+    \item Prove that your algorithm returns an optimal solution
+    
+    Let $G  = \{g_1,g_2, \dots ,g_k$ \} is the solution return by our greedy algorithm (in ascending order).
+    
+    Let $O  = \{o_1,o_2, \dots ,o_m$ \} is the optimal solution which is also in ascending order.
+    
+    Suppose that the greedy algorithm is different from the optimal solution. Suppose $m<k$. The optimal solution will give the minimum number of cellphone base stations.
+    
+    In the greedy algorithm, base stations are selected according to the first house that is not covered. Each base station is placed 4 miles away to the right from the first uncovered house to maximize possible length to have coverage. 
+    
+    We prove that all greedy algorithm base station locations are greater than the optimal ones.
+    
+    Base case: The first base station $o_1$ of optimal algorithm is different from $g_1$. Since the nature of our greedy algorithm, $g_1$ will be located to maximize its coverage. Hence, $o_1$ cannot be greater than $g_1$ because $o_1$ station will not be able to cover the first house. Thus, $o_1 < g_1$.
+    
+    Induction Hypothesis: Assume that $o_{k-1} < g_{k-1}$ for all $k>1$.
+    
+    Inductive step: we show that $o_{k} < g_{k}$.
+    
+    By the inductive hypothesis, we have $o_{k-1} < g_{k-1}$. This means that all the houses are covered by optimal solution, also covered by greedy algorithm.
+    
+    If we add a new station $g_k$ as far as possible from the previous and cover the next uncovered house. Hence all the house between $g_{k-1}$ and $g_{k}$ are covered. If we add $o_{k}$ after $g_{k-1}$, there will no house in between. Thus, all the greedy algorithm's base stations' locations are greater than the optimal solution ones ($o_{k} < g_{k}$).
+    
+    We know that the optimal solution covers houses with $m$ stations and their locations are all less then the greedy algorithm. It shows that to cover all the houses, the number of stations $m$ should be equal or greater than $k$. However, this contradicts our assumption $m<k$. Hence, $m=k$, showing that the greedy algorithm solution is the same as the optimal solution.
+    
+    Therefore, the greedy algorithm is optimal.
+    
+    
+    \item Prove a tight asymtotic bound on the running time of the algorithm
+    
+    We trace the algorithm to get the run time as below:
+    \begin{itemize}
+        \item Line 2, 3 takes 1 step for each line. The execution goes to line 4 - takes another 1 step to check if condition. If the there are houses on the road, move to line 6, otherwise return an empty list and halts the algorithm.
+        \item When the execution goes to line 6, the algorithm sort all house orders. This step takes $\Theta(nlgn)$ steps. (this is what we learnt in lecture)
+        \item We initialize $i = 0$ in a constant number of step, the run time will be in $\Theta(1)$.
+        \item The while loop condition will be executed $n$ times. In the loop body, we always have a constant number of steps. This loop run time will be $n\Theta(1)$.
+        \item Finally at the line 15, we return $baseStations$ which will take $\Theta(1)$ steps.
+    \end{itemize}
+     All together, this given us the run time complexity:
+    $$\Theta(1)+\Theta(1)+\Theta(1)+\Theta(nlgn)+\Theta(1)+n\Theta(1) + \Theta(1) \in \Theta(nlgn)$$
+    
+    Thus, a tight asymptotic run time of this algorithm is $\Theta(nlgn)$.
+    
+\end{enumerate}
+
+\end{answer}
+\end{problem}
+
+
+\pbitem[Library books problem]
+\begin{problem} 
+\begin{answer}
+\begin{enumerate}
+    \item Give a formal definition of the problem\\
+    Preconditions:
+    \begin{itemize}
+        \item An array of $n\in\mathbb{N}$, non-negative integers, $Book$, and each index $Book[i]$ represents a tuple of name of the book and the number of days it takes to finish reading.
+    \end{itemize}
+    Postconditions:
+    \begin{itemize}
+        \item An array $ReadingOrder$ of size $n$ books from $Book $ array where $ReadingOrder[i]$ denotes the $i$th book to read. Reading according to this orders will minimize late fees.
+    \end{itemize}
+    
+    \item Consider the following case:
+    
+    We want to minimize the overdue fees. Since all books charge the same amount, we want to finish books fast to stop charging us. If we finish books that take the least days to read first, we can reduce the fees.The optimal solution for this case is reading book requires $t_2, t_3, t_1$. This will cost us $5*3+8*2+10*1=41$ dollars in total.
+    
+    \item Given efficient greedy algorithm
+    \begin{lstlisting}[numbers=left]
+    libraryBooksProb(Book)
+        ReadingOrder = sortAscendOrderBySecondElement(Book)
+        return ReadingOrder
+    \end{lstlisting}
+    
+    \item Explain why your algorithm returns an optimal solution.
+    
+    My algorithm returns optimal solution. While we have $n$ books, we lose the most money. We want to reduce numbers of books as soon as possible so we don't get charged as much. 
+    
+    The list $Book$ has elements are tuple of $(Book_name, time_to_read)$. We sort the list by least days to the most days so we can reduce numbers of books faster. Hence, we will lose less money.
+    
+    \item Prove the algorithm returns the optimal solution.
+    
+     Let $A  = \{a_1,a_2, \dots ,a_n$ \} with $0 \leq i < n, a_i\in \mathbb{Z}$ is the solution return by our greedy algorithm.
+    
+    Let $O  = \{o_1,o_2, \dots ,o_n$ \} with  $0 \leq i < n, o_i\in \mathbb{Z}$is the optimal solution.
+    
+    We use exchange method to prove. $A$ does not have any inversions since $A$ is sorted from the least to greatest because we sort the reading time to ascending order. We show that if $O$ has an inversion, changing $O$ to have no inversions is still make solution optimal, which means that $A$ is also an optimal solution.
+    
+    So suppose $O$ has one inversion, $q=p+1$, $p<q$ and $ReadingOrder[o_q] < ReadingOrder[o_p]$.
+    
+    We have formula to calculate late fees:
+    
+    $$\sum_{i=1}^n ReadingOrder[o_i](n-i+1)$$
+    
+    $$= \sum_{i=1}^{p-1} ReadingOrder[o_i](n-i+1) +
+    ReadingOrder[o_p](n-p+1)$$
+    $$+ ReadingOrder[o_{p+1}](n-(p+1)+1) +
+    \sum_{i=p+2}^{n} ReadingOrder[o_i](n-i+1)$$
+    
+    $$= \sum_{i=1}^{p-1} ReadingOrder[o_i](n-i+1) +
+    ReadingOrder[o_p](n-p+1)$$
+    $$+ ReadingOrder[o_{q}](n-(q)+1) +
+    \sum_{i=p+2}^{n} ReadingOrder[o_i](n-i+1)$$
+    
+    
+    We show that by swapping to remove inversion, we will still have an optimal solution. We will denote $ReadingOrder[o_p]=a$ and $ReadingOrder[o_q]=b$.
+    
+    We have the following:
+    
+    $$a (n-p+1) + b(n-q+1)$$
+    $$= an-ap+a + b(n-(p+1)+1)$$
+    $$= an-ap+a + bn -bp$$
+    we replace $a$ with $b$
+    $$> an-ap+b + bn -bp$$ 
+    $$= a(n-p) + b(1+n-p)$$
+    $$= a(n-(q-1)) + b(1+n-p)$$
+    $$= a(n-q+1) + b(n-p+1)$$ 
+    $$= ReadingOrder[o_p](n-q+1) +ReadingOrder[o_q](n-p+1)$$
+    
+    
+    Hence, we have:
+    $$\sum_{i=1}^n ReadingOrder[o_i](n-i+1)$$
+    
+    $$= \sum_{i=1}^{p-1} ReadingOrder[o_i](n-i+1) +
+    ReadingOrder[o_p](n-p+1)$$
+    $$+ ReadingOrder[o_{q}](n-(q)+1) +
+    \sum_{i=p+2}^{n} ReadingOrder[o_i](n-i+1)$$
+    
+    $$ > \sum_{i=1}^{p-1} ReadingOrder[o_i](n-i+1) +
+    ReadingOrder[o_q](n-p+1)$$
+    $$+ ReadingOrder[o_p](n-(q)+1) +
+    \sum_{i=p+2}^{n} ReadingOrder[o_i](n-i+1)$$
+    
+    This shows that by swapping, the solution is still optimal.
+    
+    Since our greedy solution has no inversions, the greedy algorithm solution is optimal.
+    
+    \item Prove a tight asymtotic bound on the running time of the algorithm
+    We trace the algorithm to get run-time as below:
+    \begin{itemize}
+        \item Line 2 takes run time or sorting algorithm. We sort the algorithm to ascending order by the second element of the tuple, which takes $\Theta(nlgn)$. At the worst case, sorting algorithm takes $\Theta(nlgn)$.
+        \item Return $ReadingOrder$ takes $\Theta(1)$ steps.
+        \item In total, this algorithm has run-time:
+        $\Theta(nlgn)+\Theta(1) \in \Theta(nlgn)$.
+        
+    \end{itemize}
+    Hence, the run time for this algorithm is $\Theta(nlgn)$
+    
+\end{enumerate}
+\end{answer}
+\end{problem}
+
+\end{problemlist}
+
+
+\end{document}

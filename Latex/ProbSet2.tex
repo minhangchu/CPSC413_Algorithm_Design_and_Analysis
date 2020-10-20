@@ -1,0 +1,326 @@
+\documentclass{cpsc413Solutions}
+\usepackage{amsmath}
+
+\coursetitle{Design and Analysis of Algorithms}
+\courselabel{CPSC 413}
+\exercisesheet{Problem Set \#[2]}{}
+\student{Minh Hang Chu - 30074056}
+\semester{Winter 2020}
+
+\begin{document}
+
+\team{Minh Hang Chu}
+
+\sources{Lecture Notes,
+Tutorial Notes,
+Textbook}
+
+\begin{problemlist}
+\pbitem [Exercise 1 page 67]
+\begin{problem}
+\begin{answer}
+Answer:
+\newline
+\begin{enumerate}
+\item $n^2$ 
+
+When doubling input size: $n^2 \xrightarrow{} (2n)^2 = 4n^2$. 
+Since $n$ gets larger, the ratio of the run times will be. Therefore the run time of this algorithm will increase by a factor of 4.\\
+
+When increasing input size by 1: $n^2 \xrightarrow{} (n+1)^2 = n^2 + 2n + 1$.
+Hence, the run time of this algorithm will increase by $2n+1$. 
+
+\item $n^3$
+
+When doubling input size: $n^3 \xrightarrow{} (2n)^3 = 8n^3$. 
+Since $n$ gets larger, the ratio of the run times will be. Therefore the run time of this algorithm will increase by a factor of 8. \\
+
+When increasing input size by 1: $n^3 \xrightarrow{} (n+1)^3 = n^3 + 3n^2 +3n + 1$. Hence, the run time of this algorithm will increase by $3n^2 +3n + 1$. 
+
+\item $100n^2$
+
+When doubling input size: $100n^2 \xrightarrow{} 100(2n)^2 = 400n^2$. 
+Since $n$ gets larger, the ratio of the run times will be Therefore, the run time of this algorithm will increase by a factor of 4.\\
+
+When increasing input size by 1: $100n^2 \xrightarrow{} 100(n+1)^2 = 100(n^2 + 2n + 1)$. Hence, the run time of this algorithm will increase by $200n+100$.
+
+\item $nlogn$
+
+When doubling input size: $nlogn \xrightarrow{} 2n log(2n) = 2n*log(n) +2nlog(2)$. 
+Therefore, when $n$ gets doubled, the running time will increase by $n ∗ log(n) + 2n ∗ log(2$).\\
+
+When increasing input size by 1: $$nlogn \xrightarrow{} (n+1)log(n+1) = log(n+1) + nlog(n+1)$$
+The run time of this algorithm will increase by $log(n+1)+ nlog(n+1) -nlogn$. 
+
+\item $2^n$
+
+When doubling input size: $2^n \xrightarrow{} 2^{2n} = (2^n)^2$. Hence, the run time was increases by square factor.
+
+When increasing input size by 1: $2^n \xrightarrow{} 2^{(n+1)} = (2^n)2$. 
+Therefore, the run time of algorithm grows 2 times slower when the input increases by 1.
+
+\end{enumerate}
+\end{answer}
+\end{problem}
+
+
+\pbitem [Exercise 3 Page 67]
+\begin{problem}
+\begin{answer}
+
+
+The ascending order list of function is : $f_2, f_3, f_6, f_1, f_4, f_5$
+
+Proof as follow:
+\begin{itemize}
+\item $f_2(n) \in {O}(f_3(n))$
+We prove $f_2(n) \in o(f_3(n))$ which implies $f_2(n) \in {O}(f_3(n))$
+
+$$\lim_{n\to\infty}\frac{f_2}{f_3} = \lim_{n\to\infty}\frac{\sqrt{2n}}{n+10} = \lim_{n\to\infty} \frac{\sqrt{2} n^{0.5}}{n^{0.5}(n^{0.5}+\frac{10}{n^{0.5}}) } $$\\
+$$= \lim_{n\to\infty} \frac{\sqrt{2}}{n^{0.5}+\frac{10}{n^{0.5}}} = 0$$
+
+\item $f_3(n) \in {O}(f_6(n))$
+We prove $f_3(n) \in o(f_6(n))$ which implies $f_3(n) \in {O}(f_6(n))$
+$$\lim_{n\to\infty}\frac{f_3}{f_6} = \lim_{n\to\infty}\frac{n+10}{n^2 logn } = \lim_{n\to\infty} (\frac{1}{nlogn} + \frac{10}{n^2logn}) = 0 $$
+
+\item $f_6(n) \in {O}(f_1(n))$
+We prove $f_6(n) \in o(f_1(n))$ which implies $f_6(n) \in {O}(f_1(n))$
+
+$$\lim_{n\to\infty}\frac{f_6}{f_1} = \lim_{n\to\infty} \frac{n^2logn}{n^{2.5}} = \lim_{n\to\infty} \frac{logn}{n^{0.5}}$$
+$$ \lim_{n\to \infty} \frac{2\sqrt{n}}{ln(10)n} =\lim_{n\to \infty} \frac{2}{ln(10)\sqrt n} = 0$$
+
+\item $f_1(n) \in {O}(f_4(n))$
+
+We prove $f_1(n) \in o(f_4(n))$ which implies $f_1(n) \in {O}(f_4(n))$
+
+$$\lim_{n\to\infty}\frac{f_1}{f_4} = \lim_{n\to\infty} \frac{n^{2.5}}{10^n} = \lim_{n\to\infty} \frac{(5/2) n^{1.5}}{ln10*10^n}$$
+$$ \lim_{n\to\infty} \frac{(15/4) n^{0.5}}{ln10*ln10*10^n} = \lim_{n\to\infty} \frac{15/(8*n^{0.5})}{ln10*ln10*ln10*10^n} $$
+$$= \lim_{n\to\infty} \frac{15}{8*n^{0.5}(ln10)^3*10^n} = 0$$
+
+
+\item $f_4(n) \in {O}(f_5(n))$
+We prove $f_4(n) \in o(f_5(n))$ which implies $f_4(n) \in {O}(f_5(n))$
+
+$$\lim_{n\to\infty}\frac{f_4}{f_5} = \lim_{n\to\infty} \frac{10^n}{100^n} = \lim_{n\to \infty} \frac{10^n}{(10^2)^n} = \lim_{n\to\infty} \frac{1}{10^n} = 0$$
+
+\end{itemize}
+\end{answer}
+\end{problem}
+
+
+\pbitem [Prove the following statements directly from the deﬁnitions or using the Limit Test.]
+\begin{problem}
+\begin{answer}
+\begin{enumerate}
+    \item $2n^2 + \sqrt{n} \in \Omega(n)$
+    
+    We prove $2n^2 + \sqrt{n} \in \omega(n)$ which will imply $2n^2 + \sqrt{n} \in \Omega(n)$.
+    
+    $$\lim_{n\to \infty} \frac{2n^2+\sqrt{n}}{n} = \lim_{n\to\infty} (2n + \frac{\sqrt{n}}{n})= \lim_{n\to\infty}(2n + \frac{1}{\sqrt{n}}) =\lim_{n\to\infty}2n + 0= \infty$$
+    Therefore, $2n^2 + \sqrt{n} \in \omega(n)$ which implies $2n^2 + \sqrt{n} \in \Omega(n)$
+    
+    \item $5n^3 +3.5n^2 -7n +19 \in {O}(n^3)$
+    
+     We use a theorem in class about \[f(n) \in \Theta(g(n)) \Leftrightarrow  \{f(n) \in O(g(n)) \land f(n) \in \Omega(g(n))\}\]
+    We use L'Hopital's Rule to prove:
+    $$\lim_{n\to\infty} \frac{5n^3 +3.5n^2 -7n +19}{n^3} = \lim_{}n\to\infty \frac{15n^2 + 7n -7}{3n^2}$$
+    $$= \lim_{n\to \infty} \frac{30n+7}{6n} = \lim_{n\to\infty} \frac{30}{6}=5$$
+    Using limit test we get a constant, therefore, $5n^3 +3.5n^2 -7n +19 \in \Theta(n^3)$ which also means $5n^3 +3.5n^2 -7n +19 \in {O}(n^3)$.
+    
+    \item $n^4 \in {O}(2^n)$
+    We prove $n^4 \in {o}(2^n)$ which will imply $n^4 \in {O}(2^n)$. We use L'Hopital Rule to prove following:
+    $$\lim_{n\to\infty} \frac{n^4}{2^n} = \lim_{n\to\infty} \frac{4n^3}{2^n ln(2)}$$
+    $$= \lim_{n\to\infty} \frac{12n^2}{2^n ln^2(2)} = \lim_{n\to\infty} \frac{24n}{2^n ln^3(2)} = \lim_{n\to\infty} \frac{24}{2^n ln^4(2)} = 0$$
+    Therefore, $n^4 \in {o}(2^n)$ which also means $n^4 \in {O}(2^n)$.
+    
+    \item $20n^2 + nlgn \in \Theta(n^2)$
+    
+    We use a theorem in class about \[f(n) \in \Theta(g(n)) \Leftrightarrow  \{f(n) \in O(g(n)) \land f(n) \in \Omega(g(n))\}\]
+    
+    We use L'Hopital Rule:
+    $$ \lim_{n\to\infty} \frac{20n^2 + nlgn}{n^2} = \lim_{n\to\infty} (20 + \frac{lgn}{n}) = 20+ \lim_{n\to\infty} \frac{lgn}{n}= 20 + \lim_{n\to\infty} \frac{1}{nlg2}=20+0 = 20$$
+    We get a constant, therefore, $20n^2 + nlgn \in \Theta(n^2)$.
+    
+\end{enumerate}
+\end{answer}
+\end{problem}
+
+
+\pbitem [Gale-Shapley Stable Matching algorithm]
+\begin{problem}
+\begin{answer}
+\begin{enumerate}
+    \item Define clearly the input or arguments for the algorithm. This includes the data structures used and the type of data stored in the data structure. 
+    
+    There are a finite list of $n$ men and $n$ women. $n$ is an integer for number of men or women.\\
+    The input for this algorithm is 2-dimensional array of men $M$ and 2-dimensional array of women $W$:
+    \begin{itemize}
+        \item $M$ has $n$ elements denotes all men in some order. $M[i]$ is the $i^{th}$ man in the list. We write the list as follow: $[m_0,m_1,\dots, m_{n-1}]$. Each element $m_0, m_1 \dots$ in the list is an array of size $n$ denotes that man's preference list of women.
+        \item $W$ has $n$ elements denotes all women in some order. $W[i]$ is the $i$th women in the list. We write the list as follow: $[w_0,w_1,\dots, w_{n-1}]$. Each element $w_0, w_1 \dots$ in the list is an array of size $n$ denotes that man's preference list of men.
+    \end{itemize}
+    $M$ and $W$ are 2 arrays of size $n$, with each elements inside are sub-array of size $n$ that shows preference lists of each person. 
+    
+    \item Show how to implement line 1 in the algorithm. How will you denote that a man or woman is free? What data structure will you use? How will you initialize this? As a result of this operation, what is the running time of this single line in the algorithm? 
+    
+    Line 1 can be implemented as followed:\\
+    For men, we need to create a linked list $M_f$ if integers which has all indices of free man in $M$. That means if $m_i$ is a free man, $i$ should be an element of $M_f$. At the beginning of the algorithm, we initialize that all men are free, which means we add all $i$ to $M_f$. The running time for this step is $\Theta(n)$.\\
+    For woman, we also create a linked list $W_f$ of size $n$ which corresponds to the index of man that they are engaged to. At the beginning of the algorithm, we initialize that all women are free, we will mark this single status by -1. That means $W_f$ with $n$ elements of -1. The running time for this step is $\Theta(n)$.\\
+    We also create an integer array $Next$ to keep track of reference lists of each man and who he has/has not proposed to. We store integer $k$ in this list and increase by 1 every time he makes proposals, either her get engaged or not, because the next woman in the list $k+1$th will be the next highest-ranked woman he has not proposed to. This initialization will take $\Theta(n)$ steps.\\
+    It is also preferable to make an integer array $Ranking$ with size $n \times n$ to compare 2 men's ranking for a woman. The initialization of $Ranking$ will be $\Theta(n^2)$
+    Therefore, the run time for line 1 is $\Theta(n^2)$.
+    
+    \item Show how to implement line 2 in the algorithm. How will you determine if there is a free man that hasn’t proposed to all women yet? What is the cost of checking this condition?
+    
+    We will check if there is any free man by checking the linked list. If there is no head of the linked list, it means there is no free man. We create an array $Next$ of size $n$ with all integers initialized to 0, this indicate that the man has not proposed to anyone. When a man $m_i$ propose to the next woman, we increase the number at in index $i$ of $Next$ by 1. If the number at that index is n, which means that the man has proposed to all the woman in his list. The running time for this line will be $\Theta(1)$ since taking  head and using array index takes constant time.
+    
+    
+    \item Show how to implement line 3 in the algorithm. How will you choose a free man that hasn’t proposed to all women? What is the cost of this choice?
+    
+    Similarly to the previous part, if $M_f$ is empty, it means there is no free man left. Otherwise, taking the head of the linked list will get the next free man, This takes $\Theta(1)$ time.
+    
+    \item Show how to implement line 4 and what the cost of this implementation is.
+    
+    We can look at the value in $Next$ at $m_i$ to find the index $p$ of the next woman in his preference list that he has not proposed to. Then we will look at his preference list, the woman at index $p$ will be the next highest ranked. Since this line only use array indexing, it will take constant time $\Theta(1)$.
+    
+    \item Show how to implement the condition in line 5. How will you determine if a woman is free? What is the cost of checking this condition? 
+    
+    This line checks if the $w$ is free, we check by looking at the value in list $W_f$. If the value is -1, it means that woman is free. Otherwise, it means she is already engaged. This step only uses array index and that takes constant time. $\Theta(1)$
+    
+    \item Show how to implement line 6. How will you keep track of engaged pairs? What data structure will be used to store these? What is the cost of adding a pair?
+    
+    To keep track of engaged pairs, we look at $W_f$ array. If a man $m_i$ is engaged with the woman $w_j$ with highest ranking in his list, we will update the value in $W_f$ at index $j^{th}$ to $i$. This indicates that the woman $w_j$ is currently engaged with $m_i$. Since the step uses array indexing so it will take constant time $\Theta(1)$.
+    
+    \item Show how to implement line 7. How will you determine who w is engaged to? What is the cost of this operation? 
+    
+    This step is used to check if the woman $w_j$ is currently engaged with another man $m_k$. We will check in $W_f$ at $j^{th}$ position, if the value at that index is $k$, it means $w_j$ is engaged to $m_k$. The cost of this operation is $\Theta(1)$ since this step uses array indexing.
+    
+    \item Show how to implement line 9. How do you indicate that m remains free? (Possibly you do nothing here.) What is the cost of this operation?
+    
+    If the man $m_i$ likes $w_j$ but she already engaged with someone else and prefer that person than $m_i$, $m_i$ will remain free. We implement that by putting him back to the head of $M_f$. We also need to increase the value at index $i$ in $Next$ so that he does not propose to the same person again.This step takes $\Theta(1)$.
+    
+    \item Show how to implement line 11. This may the same as line 6. What is the cost of this operation? 
+    
+    Similar to line 6. To keep track of engaged pairs, we look at $W_f$ array. If a man $m_i$ is engaged with the woman $w_j$ with highest ranking in his list, we will update the value in $W_f$ at index $j^{th}$ to $i$. This indicates that the woman $w_j$ is currently engaged with $m_i$. Since the step uses array indexing so it will take constant time $\Theta(1)$.
+    
+    \item Show how to implement line 12. How does $m'$ move from being engaged and part of a pair to being free again? What is the cost of this operation?
+    
+    Since $(m_k,w_j)$ are engaged and $m_i$ is free again. We will increase $Next$ at $i^{th}$ position to make sure he won't propose to the same woman and move on to the next one. We also need to put him back to $M_f$ list of free men. These 2 steps take constant time $\Theta(1)$ since it uses array indexing.
+    
+    \item Show how to implement line 16. What is the cost of this operation?
+    
+    Now we create $S$ which contains tuple of integers of the women's index and her partners fron $W_f$. Then we return $S$.
+    The cost of this operation is $\Theta(n)$.
+    
+    \item Define the runtime of the entire algorithm as a function
+    
+    First, we add up the costs from line 2 to line 12. Since all lines take constant time $\Theta(1)$. Therefore, using lists and arrays can make inside the body loop run time is $\Theta(1)$.
+    
+    Now we need to multiply with number of times the while loop executed. From the first assignment, we know that the while loop executed at most $\frac{n(n+1)}{2}$ times.
+    
+    Finally, we want to add the costs of line 1 and 16 to the result. We indicate that the run time of line 1 is $\Theta(n) + \Theta(n^2)$ times. The cost of line 16 is $\Theta(n)$. 
+    
+    Therefore, the total cost of this algorithm is: $$\Theta(n) + \Theta(n^2) + \frac{n(n+1)}{2}\Theta(1)$$
+    
+    \item What is the tight $\Theta$ asymptotic runtime of this implementation of the Gale-Shapley Stable Matching algorithm? Prove that your bound is correct
+    
+   The tight asymptotic runtime of this implementation is $\Theta(n^2)$.
+   We prove this using limit test:
+   $$\lim_{n\to\infty} \frac{\Theta(n) + \Theta(n^2)+ \frac{n(n+1)}{2}\Theta(1)}{n^2}$$
+   $$= \lim_{n\to\infty} \frac{\Theta(n)}{n^2} + \lim_{n\to\infty} \frac{\Theta(n^2)}{n^2}+\lim_{n\to\infty} \frac{n(n+1)\Theta(1)}{2n^2}$$
+    $$= 0 + 1 +\lim_{n\to\infty} (\frac{n\Theta(1)}{2n} + \frac{\Theta(1)}{2n}) $$
+    $$=  1 + \frac{constant}{2} + 0$$
+    
+    We get constant after doing limit test, therefore, the function is in $\Theta(n^2)$.
+    
+\end{enumerate}
+\end{answer}
+\end{problem}
+
+\pbitem [Give a worst-case analysis]
+\begin{problem}
+\begin{answer}
+\begin{enumerate}
+    \item  An expression of the runtime function of the algorithm (should involve a sum). 
+    
+    We do worst-case analysis for this algorithm. 
+    
+    First, $A[0] = X[0]$ takes 1 step.\\
+    The for loop condition statement in line 1 will be executed $n-1$ times.\\
+    Inside the for loop, line 2 will be executed in 1 step and $BINARYSEARCH$ algorithm take $\Theta(lgk)$ steps.\\
+    We will look at the inside for loop at line 3 and line 4. We see that the for loop goes from $j=i$ to $k+1$.For the worst case, we want to maximize numbers of for loops are executed which mean $k=0$. Therefore, we want to look at when the for loop keeps going down to $k=0$ then$0+1=1$. That shows line 3 and 4 will be executed $\sum_{j=1}^i 2$ steps. \\
+    Then we take 1 step at line 5.\\
+    In total, inside for loop from line 2-5, the number of steps are executed is:
+    $\sum_{i=1}^{n-1}(1+\Theta(lgi) + \sum_{j=1}^i(2)+1)$.
+    Finally we add the last step at line 6, which takes 1 step.\\
+    Hence we have the runtime function of the algorithm is (we add 2 steps at the first line and line 6 and $n-1$ steps for line 1) :
+    \begin{equation}
+       2 + (n-1) +  \sum_{i=1}^{n-1}(1+\Theta(lg i) + \sum_{j=1}^i(2)+1)
+    \end{equation}
+    
+    We can simplify the function:
+    $$ 2 +(n-1) +  \sum_{i=1}^{n-1}(\Theta(lgi) + \sum_{j=1}^i(2)+2)$$
+    $$= n+1 +  \sum_{i=1}^{n-1}(\Theta(lgi) + 2i+2)$$
+    $$= n+1 + \sum_{i=1}^{n-1} \Theta(lgi) + 2 \frac{(n-1)n}{2}+ 2(n-1)$$
+    $$= n+1 +\sum_{i=1}^{n-1}\Theta(lgi) + (n-1)n +2n-2$$
+    $$= n+1 +\sum_{i=1}^{n-1}\Theta(lgi) + n^2-n +2n-2$$
+    $$= \sum_{i=1}^{n-1}\Theta(lgi) + n^2+2n-1$$
+    
+    \item An asymptotic upper bound on the runtime of the algorithm. Here you must prove the upper bound.
+    
+      We have:
+    $$\sum_{i=1}^{n-1}\Theta(lgi) + n^2+2n-1$$
+    $$= \sum_{i=1}^{n-1}\Theta(lgn) - \Theta(lgn)+ n^2+2n-1$$
+    $$ \leq n\Theta(lgn) -\Theta(lgn) + n^2+2n-1$$
+    
+    We prove the function above is in $\Theta(n^2)$.
+    
+    $$\lim_{n\to\infty} \frac{n\Theta(lgn) -\Theta(lgn) + n^2+2n-1}{n^2} $$
+    $$= \lim_{n\to\infty }( \frac{n\Theta(lgn)}{n^2} -\frac{\Theta(lgn)}{n^2}+ \frac{n^2}{n^2} +\frac{2n}{n^2} - \frac{1}{n^2})$$
+    $$= \lim_{n\to \infty} (\frac{n\Theta(lgn)}{n^2}-\frac{\Theta(lgn)}{n^2}+ 1 + \frac{2}{n} - \frac{1}{n^2})$$
+    $$=0+0+1+0+0 = 1$$
+    
+    
+   From here, we get a constant, which means the function is in $\Theta(n^2)$. Then we can claim that a lower bound for the running time of this algorithm is is $\Omega(n^2)$.
+    
+    \item An asymptotic lower bound on the runtime of the algorithm. Here again you must prove your result. 
+        
+    We have:
+    $$\sum_{i=1}^{n-1}\Theta(lgi) + n^2+2n-1$$
+    $$= \sum_{i=1}^{n}\Theta(lgi) - \Theta(lgn)+ n^2+2n-1$$
+    $$ = \sum_{i=1}^{n/2}\Theta(lgi) +  \sum_{i=n/2+1}^{n}\Theta(lgi) -\Theta(lgn) + n^2+2n-1$$
+    $$ \geq 0 + \sum_{i=n/2+1}^{n}\Theta(lgi) -\Theta(lgn) + n^2+2n-1$$
+    $$ \geq \frac{n}{2}\Theta(lg(n/2)) -\Theta(lgn) + n^2+2n-1$$
+    
+    
+    We prove the function above is in $\Theta(n^2)$.\\
+    
+    
+    $$\lim_{n\to\infty} \frac{\frac{n}{2}\Theta(lg(n/2)) -\Theta(lgn) + n^2+2n-1}{n^2} $$
+    $$= \lim_{n\to\inftY }( \frac{n\Theta(lg(n/2))}{2n^2} -\frac{\Theta(lgn)}{n^2}+ \frac{n^2}{n^2} +\frac{2n}{n^2} - \frac{1}{n^2})$$
+    $$= \lim_{n\to \infty} (\frac{\Theta(lg(n/2))}{2n}-\frac{\Theta(lgn)}{n^2}+ 1 + \frac{2}{n}- \frac{1}{n^2})$$
+    $$=0-0+1+0-0 = 1$$
+    
+      From here, we get a constant, which means the function is in $\Theta(n^2)$. Then we can claim that a lower bound for the running time of this algorithm is is ${O}(n^2)$.
+   
+    \item An asymptotic tight bound on the runtime of the algorithm.
+    
+  From previous part, we know that the function has asymptotic lower bound and upper bound is $\Omega(n^2)$ and ${O}(n^2)$. There fore, we get the asymptotic tight bound is $\Theta(n^2)$.
+    
+ 
+
+\end{enumerate}
+
+
+
+
+\end{answer}
+\end{problem}
+
+
+\end{problemlist}
+
+
+
+
+
+\end{document}

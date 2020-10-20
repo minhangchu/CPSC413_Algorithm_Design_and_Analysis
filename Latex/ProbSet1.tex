@@ -1,0 +1,105 @@
+\documentclass{cpsc413Solutions}
+\usepackage{amsmath}
+
+\coursetitle{Design and Analysis of Algorithms}
+\courselabel{CPSC 413}
+\exercisesheet{Problem Set \#[1]}{}
+\student{Minh Hang Chu - 30074056}
+\semester{Winter 2020}
+
+\begin{document}
+
+\team{Minh Hang Chu}
+
+\sources{Lecture Notes 1,
+Notes from Tutorial}
+
+\begin{problemlist}
+\pbitem Give a precise definition of the Stable Matching Problem as described on p.3-4 of the textbook.
+\begin{problem}
+\begin{answer}
+Answer: 
+\newline
+The Stable Matching Problem is the problem of finding a stable matching between two equal-sized sets of elements M and W, given preference list for each man and woman. The result of the problem is a perfect match (everyone is in a pair) and does not have stability, does not exist $(m,w')(m',w)$ in the result such that $m$ prefers $w$ and $w$ prefers $w$.
+\newline
+
+\end{answer}
+\end{problem}
+
+
+\pbitem True or false? In every instance of the Stable Matching Problem, there is a stable matching containing a pair $(m, w)$ such that $m$ is ranked first on the
+preference list of $w$ and $w$ is ranked first on the preference list of $m$.
+\begin{problem}
+\begin{answer}
+\newline
+False.
+We have counterexample: \\
+We have $M$ = \{$m_1$, $m_2$\}, $W$ = \{$w_1$, $w_2$\}  with preference lists:\\
+$m_1$ : $w_1$,$w_2$\\
+$m_2$ : $w_2$,$w_1$\\
+$w_1$ : $m_2$,$m_1$\\
+$w_2$ : $m_1$,$w_2$\\
+Consider stable matching cases:\\
+If $m_1$ was paired with the first ranked w on the preference list, then $m_1$ would be pair with $w_1$. However, $m_1$ is not ranked first on $w_1$'s preference list.\\
+If $m_2$ was paired with the first ranked w on the preference list, then $m_2$ would be pair with $w_2$. However, $m_2$ is not ranked first on $w_2$'s preference list.\\
+For this instance, there is no case $(m, w)$ such that $m$ is ranked first on the
+preference list of $w$ and $w$ is ranked first on the preference list of $m$.
+
+Therefore, the statement is false.
+\newline
+\end{answer}
+\end{problem}
+
+
+
+\pbitem True or false? Consider an instance of the Stable Matching Problem in which there exists a man m and a woman w such that $m$ is ranked first on the
+preference list of $w$ and $w$ is ranked first on the preference list of $m$. Then in
+every stable matching S for this instance, the pair $(m, w)$ belongs to S.
+\begin{problem}
+\begin{answer}
+\newline
+True.\\
+We prove by contradiction. Suppose that for the instance that $m$ is ranked first on the preference list of $w$ and $w$ is ranked first on the preference list of $m$, there is a stable matching with the pairs $(m,w')$ and $(m',w)$.\\
+However, $w$ is ranked first on $m$'s preference list, $m$ prefers $w$ than $w'$. And $m$ is ranked first on $w$'s preference list, $w$ prefers $m$ than $m'$.\\
+This is an instability, because $m$ and $w$ prefer each other, they will leave their current partners.
+Therefore, $(m,w)$ must belong to S.
+\newline
+
+\end{answer}
+\end{problem}
+
+
+\pbitem How many times will the while loop in the Stable Matching algorithm as presented on page 6 of the text be executed? Assume that set M contains n men and W contains n women.
+\begin{problem}
+\begin{answer}
+\newline
+Lower bound - Best case: We have n men and n women, and each man likes different woman. In this case, every man will find a free woman on the first proposal, then the while loop will be executed $n$ times, equal numbers of men/women.\\
+
+Upper bound - Worst case: We have n men and n women, and every man get matched with his last choice of woman which results in all n men have to propose to n women. In this worst case, the while loop has to iterate through all possible pairs of man and woman. Since we have n men and n women, the total possible pairs is $n^2$. Therefore, the while loop will be executed at most $n^2$ times.
+\newline
+
+\end{answer}
+\end{problem}
+
+
+\pbitem Exercise 3 on pages 22/23
+\begin{problem}
+\begin{answer}
+\newline
+There is not always a stable pairs of schedules for every set of TV shows and ratings. Consider the following counterexample:\\
+Network A has ShowA1 and ShowA2. Network B has ShowB1 and ShowB2.\\
+Timeslot 1: ShowA1 - 20, ShowB2 - 5\\
+Timeslot 2: ShowA2 - 10, ShowB2 - 15\\
+This set cannot have a stable pair of schedules because Network A can switch ShowA1 and ShowA2 to win more slots. That means there exists a schedule such that Network A wins more time slots than the schedule above. Therefore, there is no stable pair of schedules for this set of TV shows and ratings.
+
+\newline
+
+\end{answer}
+\end{problem}
+
+\end{problemlist}
+
+
+\end{document}
+
+

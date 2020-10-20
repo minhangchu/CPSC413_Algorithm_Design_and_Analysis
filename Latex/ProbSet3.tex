@@ -1,0 +1,261 @@
+\documentclass{cpsc413Solutions}
+\usepackage{amsmath}
+\usepackage{listings}
+
+\coursetitle{Design and Analysis of Algorithms}
+\courselabel{CPSC 413}
+\exercisesheet{Problem Set \#[3]}{}
+\student{Minh Hang Chu - 30074056}
+\semester{Winter 2020}
+
+\begin{document}
+
+\team{Minh Hang Chu}
+
+\sources{Lecture Notes,
+Algorithm Design textbook}
+
+\begin{problemlist}
+\pbitem [Review of undirected graphs, breadth-first search, and depth-first search.]
+\begin{problem}
+\begin{answer}
+My answer:
+\newline
+\begin{enumerate}
+    \item $G$ is a graph 
+    
+    \begin{enumerate}
+        \item We assume that the traversal searches the neighbors from the smallest to the largest. The node is visited means when it gets colored gray. Sequence of vertices of $G$ visited using a DFS traversal starting at vertex 1 is:
+        $1,2,3,4,6,5,7,8$. \\
+        
+        \item We assume that the traversal searches the neighbors from the smallest to the largest. The node is visited means when it gets colored gray. Sequence of vertices of $G$ visited using a BFS traversal starting at vertex 1 is:
+        $1,2,3,4,6,5,7,8$.\\
+        
+        \item Yes, $G$ is connected. We have definition a graph $G=(V,E)$ is a connected graph if there is a path from $u$ to $v$ for every pair of vertices $u,v \in V$.
+        
+        The edge that can be removed such that $G$ is no longer connected is the edge $(4,6)$ because vertices $1,2,3,4$ do not have any paths to vertices $5,6,7,8$.\\
+        
+        \item Yes, $G$ contain cycles. We have definition a cycle (in an undirected graph $G= (V,E)$) is a path with length greater than zero from some vertex to itself.
+        
+        We have some examples: path $(1,2),(2,4),(4,1)$ is cyclic because there is path from $1$ to $1$; path $(1,2),(2,3),(3,4),(4,1)$ is cyclic because there is path from $1$ to $1$, path $(5,6),(6,7),(7,5)$ is cyclic because there is path from $5$ to $5$, etc.
+        
+        \item No, $G$ is not a tree. We define a tree is a connected acyclic graph. We also define a cycle (in an undirected graph $G= (V,E)$) is a path with length greater than zero from some vertex to itself. This means a tree does not have cycles and it is connected. 
+        
+        From the previous part, we already show that the graph has cycles, Therefore, $G$ is not a tree.
+        \end{enumerate}
+        
+    \item  An undirected graph is complete if it contains an edge between every pair of distinct vertices. 
+    
+    \begin{enumerate}
+        \item What does a depth-ﬁrst search tree of a complete graph look like?
+        
+        A depth-first search tree of a complete graph will be a line. Because every vertex has edges to each other, when we do DFS, we will be able to reach every vertices on the first recursion. When we do backtrack, all vertices are already visited. Therefore, a depth-first search tree will be a line.
+        
+        \item What does a breadth-ﬁrst search tree of a complete graph look like?
+        
+        A breadth-first search tree of a complete graph of a star. Because every vertex has edges to each other, the BFS will visit all vertex in the first iteration. Hence, we have a star shape tree, which is a rooted tree with all children are leaves.
+        
+    \end{enumerate}
+    
+    \item  Let G be an undirected graph with n vertices where edges are represented as an adjacency list. Describe a data structure to store the adjacency list such that we can check in O(lgn) time if two vertices are adjacent. Justify your answer. 
+    
+    Note: I use run time we found in lectures and previous assignments.
+    
+    We can store the adjacency list in an sorted array. Since the graph has $n$ vertices in order, for every vertex $i$, we can store all its neighbors in a sorted array. Since we use array indexing, this will takes ${O}(1)$
+    
+    If we want to check if vertex $i$ and $j$ are adjacent, we can do binary search on the neighbors of $i$. Binary search takes ${O}(lgn)$ times. Since if $i$ is neighbor of $j$ then $j$ is a neighbor of $i$. We only need to find if $j$ is in neighbor list of $i$ to see if they are adjacent.
+    
+    Hence, we have ${O}(1) + {O}(lgn) \in {O}(lgn)$ so this operation takes ${O}(lgn)$.
+    
+    \item Exercise 7, page 108-109
+    
+    The statement is true. \\
+    Proof:\\
+    Suppose $G=(V,E)$ is a graph with an even number $n$ vertices and every vertex in $G$ has degree of $n/2$.
+    
+    Suppose $u,v \in V$ are arbitrary, we want to show that there is a path between $u$ and $v$.\\
+    Case 1:
+    If $(u,v) \in E$, then it is trivial that there exists a path from $u$ to $v$.
+    
+    Case 2: If $(u,v) \notin E$, we have to show that there exists some paths between $u$ and $v$.
+    
+    We prove this case by contradiction. Suppose $G$ is an undirected graph with $n$ nodes and there is no path between $u$ and $v$.
+    
+    Since the graph is unconnected and every nodes of $G$ has degree at least $n/2$, let $u$ connect with $n/2$ arbitrary distinct nodes and $v$ connect with another $n/2$ distinct nodes.
+    
+    We have the total nodes is $1+1+\frac{n}{2}+ \frac{n}{2} = n+2$ ($u$, $v$, and their neighbors). However, $G$ only has $n$ nodes in total. Hence, there must exist common neighbors between them, which means there is a path can go from $u$ to $v$. 
+    
+    Therefore, there always exists a path between $u$ and $v$ and every node has at least degree of $n/2$. Hence, $G$ is connected.
+    
+\end{enumerate}
+
+\end{answer}
+\end{problem}
+
+
+\pbitem [Exercise 2 page 107]
+\begin{problem}
+\begin{answer}
+\begin{enumerate}
+    \item  a precise speciﬁcation of the problem \\
+    Assume the graph is connected.
+    
+    Pre-condition:
+    \begin{itemize}
+        \item Given an connected undirected graph $G=(V,E)$ as input. $V$ is an array size $n$ of distinct vertices. Elements in $V$ have order like $[v_0,v_1, \dots , v_n-1]$ that permits array indexing. $E$ is an array corresponding to the order of $V$, that contains lists of all edges of each vertex is connected to (adjacency list). Since the graph is connected, there exists a path from every vertex to other vertices. 
+        
+        \item A starting node $s\in V$. 
+    \end{itemize}
+    
+    Post-condition:
+    \begin{itemize}
+        \item The graph $G$ has not been changed.
+        \item If $G$ contains a cycle, returns an array of vertices such that those vertices represents a cycle. Otherwise, return an empty array, which means there is no cycle. We also note that the array of vertices representing a cycle must have at least 3 distinct vertices, the first and last vertices are the same.
+        
+    \end{itemize}
+    
+    \item Pseudocode
+    I use DFS algorithm from Lecture Notes
+    
+  \begin{lstlisting}[numbers=left, language=C++, mathescape=true]
+cycleDFS(G=(V,E),s)
+    for each vertex $u \in V$ do 
+        $\pi$[u] = NIL // Initialize parents of all nodes are NIL
+        visited[u] = 0 // we mark 0 not visited, 1 already visited
+    end for
+    hasCycle = False // we have not found a cycle
+    path=[] // Record vertices of a cycle
+    for each vertex $u \in V$ do
+        if hasCycle = False then // if we have not found a cycle
+            if visited[u] = 0 then // if we have not visited
+                DFS-Visit(u)
+            end if
+        end if
+    end for
+    if hasCycle = True then
+        return path
+    end if
+    else
+        return []
+    end else
+    
+DFS-Visit(u)
+    for each $v \in Adj[u]$ do // for every neighbors of u
+        if hasCycle = False then 
+            if visited[v]= 1 and $\pi[u]$ != v then
+                hasCycle = True // we found a cycle
+                cycleStart = v   // the cycle starts at v
+                path.add(v) // add the start of cycle
+                path.add(u) // add the current vertex
+                findRoot = $\pi[u]$ // find parent of current vertex
+                while findRoot != cycleStart do
+                    path.add(findRoot) // add parents of u to path
+                    findRoot = $\pi[findRoot]$ // find new parents
+                end while
+                path.add(v) // add cycle start point again
+            end if
+            else visited[v] = 0 // if not visited
+                $\pi[v]$ = $u$ // record parents of v is u
+                DFS-Visit($v$) // visit each undiscovered neighbor 
+            end else
+        end if
+    end for
+\end{lstlisting}
+
+    \item Proof of correctness
+    
+    Since the algorithm above is based on the known DFS algorithm Dr.Jacobson provided in class, I assume that the algorithm is correct and focus on arguing that the new modification solve the new problem.
+    
+    We prove algorithm $cycleDFS$ is correct.\\
+    The algorithm is correct if inputs satisfy the preconditions and algorithm is executed, then the algorithm eventually halts and the given post condition is satisfied on termination.
+    
+    I will prove DFS-Visit is correct first (start from line 22).
+    \begin{itemize}
+        \item Starting at line 23, we want to check every single neighbor $v$ of $u$. If the cycle has been found at line 24, we exists the loop and return the cycle (line 42), otherwise, we keep checking.
+        
+        \item We have not discovered a cycle at line 24, we check if a neighbor of current vertex, $u$, is visited or not. If $v$ is visited and $v$ is not parents of $u$, this means there exists a cycle. This line is similar to check if $colour[v] == grey$ and if parents of $u$ are $v$. If the conditions are satisfied, we found the cycle and changed $hasCycle = True$ at line 26.
+        
+        \item Since we found the vertex $v$ that we already visited, we will assume that the cycle start from $v$. We define $cycleStart = v$ at line 27 which means $v$ is the staring point of our cycle. Then, we start adding vertices to the path list. We add $v$ to the list first since it is our starting vertex. Then we add $u$ which is a vertex in cycle. These steps are at line 28-29.
+        
+        \item We traced back to find parent of $u$ at line 30 because parents of $u$ is also a vertex in the cycle. We define $findRoot$ to start tracing back and start the while loop.
+        
+        \item At line 31, the while loop starts. This while loop is used to trace back all parents of other vertices until we find the cycle-starting vertex. While we have not found cycle-staring vertex yet, we keep tracing back. At line 32, we add parents of $u$ to the list since it is a part of the cycle path. Then we trace back and find its parents, which mean parents of parents of $u$. We keep looping until we find the cycle starting vertex $v$. This loop works as intended and eventually halts because we have found that $v$ is the starting point of the cycle, we just need to trace back to add other vertices to the list.
+        
+        \item We prove the while loop above is correct using loop invariants. Our loop invariant is: that last vertex in $path$ is connected with its parent $findRoot$.
+        
+        \begin{itemize}
+            \item We prove that loop invariant is correct before the first iteration, before an iteration and the loop guard is true, and loop invariant is true after the iteration.
+            
+            \item First, before the first iteration of the loop, loop invariant holds because the last vertex in path is $u$ and it is connected to $\pi(u)$, which is $findRoot$.
+            
+            \item  When parents of the last node in $path$ list is not $v$ a cycle starting point, means the loop guards is true. Before the loop body is executed, since $findRoot$ updates after every iteration, $findRoot$ is parent of $u$ or old $findRoot$ and they are last element of path list. There exists a path from $u$ and $findRoot$ before the iteration. Hence, the loop invariant holds before iteration when loop guard is true.
+            
+            \item During the loop body, we add $findRoot$ to path list and store new parent of $findRoot$. Hence we have new $findRoot$ is parent of old $findRoot$ now. Since we added old $findRoot$ to the path list, the last element of path list is connected to its parents, which is new $findRoot$ after the loop executions. This loop invariant still holds after executions.
+            
+            \item Therefore, loop invariant hold before the first iteration, before and after the iteration. Hence, this loop is correct.
+        \end{itemize}
+        
+        \item Finally, after keeping track of all vertices in the cycle path, we add another $v$ cycle-starting vertex to the list to show that the path from $v$ to $v$ exists at line 35. We finish this of statement here and exists the for loop.
+        
+        \item Go back to line 25, if neighbor $v$ of $u$ has not been visited, the condition will fail here and the execution move to line 37 for else statement. At this line, the vertex has not been discovered, we will record its parents and recursively called DFS-Visit. This part is the same with DFS-Visit algorithm in lecture notes when checking if $colour[v] == white$ then $\pi[v]=u$ and visit each neighbors recursively. We finish the else statement here and exists the for loop.
+        
+        \item Since the loop in this algorithm is a part of DFS algorithm that has been proven to be correct. I added if statement and a while loop that is trivially to be correct. Overall, for DFS-Visit, we have input is satisfied the precondition(a vertex in $V$) and the algorithm executed, and the loop was proven to halt eventually. Therefore, this algorithm is correct.
+        
+    \end{itemize}
+    
+    Now we prove cycleDFS algorithm is correct.
+    \begin{itemize}
+        
+        \item From line 2 to line 5, we initialize all vertices parents are NIL and have not been visited. These lines are similar to colour nodes white and set their parents to NIL in the DFS algorithm. Therefore, this loop is correct, will be executed and eventually halt.
+        
+        \item At line 6 and 7, we initialize variables that we use to detect a cycle. We set $hasCycle = False$ and $path = []$ since we have not found any cycles and there is no path to make the cycle. 
+        
+        \item From line 8 - 14 we have a for loop to check if there is any cycles while do DFS visiting. The loop goes through all vertices and check if it has found a cycle. At line 9, if the cycle has been found, it exists the for loop and the execution continues at line 15. Since the cycle has been found, $hasCycle = True$ and the execution returns the path list and halts.
+        
+        \item Otherwise, if a cycle has not been found and satisfy the condition at line 9, the execution continued at line 10. If we have already visited vertex $u$, exists the for loop and check the next vertex. Otherwise, we have not visited vertex $u$, we call DFS-Visit(u) to check its neighbours (we have proven DFS-Visit is correct above). This step is similar to DFS algorithm in lecture notes. The for loop will halt after it found the cycle, or after it went though all vertices and there is no cycles found as intended.
+        
+        \item After the for loop halts, the execution will continue at line 15. If the algorithm found a cycle, it will return path, otherwise, it will return an empty list indicates that the graph has no cycle.
+        
+        \item The input satisfy the precondition and algorithm starts executing, then the algorithm eventually halts (argued above), does not change the graph and return the right out put. Therefore, this algorithm is correct.
+        
+    \end{itemize}
+    
+    \item Proof of the above algorithm runs in time ${O}(m+n)$ with $n$ nodes and $m$ edges
+     
+    \begin{itemize}
+        \item The first for loop from line 2-5 goes through all vertices in $V$ to initialize. This 3 lines run $n$ times for $n$ vertices. Hence, the run time of this loop is $3n$ and it is in ${O}(n)$.
+        
+        \item The run time of line 6 and 7 is trivially in ${O}(1)$
+        
+        \item From line 8-13, the loop will be executed at most $n$ times, which mean all vertices. This body loop takes time for 3 lines 8, 9, 10 and runtime for $DFS-Visit$ for each iteration. Hence, the runtime for this line will be: $\sum^n_{i=0} (3 + (DFS-Visit))$.
+        7\begin{itemize}
+            \item We calculate the run time for DFS-Visit as below:
+            \item The for loop will run for all neighbors of $u$.\\
+            First if statement:
+            \item Assume we have not found a cycle, the test at line 24 pass, and assume the if condition at line 25 pass, the execution will take constant time from line 25-30.
+            \item The while loop (line 21-34)will be executed $n'$ times when there there $n'$ vertices to make a cycle. The body loop will take constant time. Hence, the run time for this will be in ${O}(n')$.
+            \item The last line in this if statement will take constant time, it will be in ${O}(1)$.\\
+            If the neighbors vertices have not been discovered, the else statement will be executed.
+            \item The else statement is similar to DFS-Visit algorithm in lecture notes. It is also proven in class that total cost of DFS-Visit , minus recursive calls, linear to $1+deg u$. That means the run time for this part is $\sum_{u \in V}= (deg u +1) = 2|m'|+|n'|$
+            \item Hence, for the worst case, DFS-Visit will take ${O}(m'+n')$ run time.
+        \end{itemize}
+        
+        \item Finally we add run time from line 15-20. The execution will run 2 lines since it is if-else statement, the execution can run 2 lines if find the cycle and return path at line 15 and 16. Otherwise, executes else statement at line 18 and 19. Hence the run time for this part is in ${O}(1)$.
+        
+        \item Now let's put everything together. When DFS-visit happen to run in the worst case, the number of vertices will change. The number of times DFS-Visit get called equals the number of vertices have not been visited after DFS-Visit. We have:
+        $$ 3n + 2 + \sum_{u \in V} (3 + (DFS-Visit)) + 2$$
+        $$= 3n + 4 + 3n + \sum_{u \in V} (DFS-Visit)$$
+        $$= 6n + 4 + {O}(n+m)$$
+        $$\in {O}(n+m)$$        
+    \end{itemize}
+\end{enumerate}
+
+Hence, we prove that the run time of the algorithm given is in ${O}(m+n)$ with $m$ nodes and $n$ edges.
+
+\end{answer}
+\end{problem}
+
+\end{problemlist}
+
+
+\end{document}

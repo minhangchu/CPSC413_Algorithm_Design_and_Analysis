@@ -1,0 +1,252 @@
+\documentclass{cpsc413Solutions}
+\usepackage{amsmath}
+\usepackage{listings}
+
+\coursetitle{Design and Analysis of Algorithms}
+\courselabel{CPSC 413}
+\exercisesheet{Problem Set \#[7]}{}
+\student{Minh Hang Chu - 30074056}
+\semester{Winter 2020}
+
+\begin{document}
+
+\team{Minh Hang Chu}
+
+\sources{
+Lecture Notes,
+Algorithm Design textbook
+}
+
+\begin{problemlist}
+\pbitem 
+\begin{problem}
+\begin{answer}
+
+It is impossible that $f(x)$ runs in polynomial time or exists a polynomial time solution for $P$.
+
+We know that $P' \leq_p P$ which means $P$ is 
+"at least as hard" as $P'$ which means every algorithm for solving $P'$ can be used to solve $P$. We also know that $P'$ does not have polynomial time solution, $P' \notin \mathcal{P}$.
+
+According to lecture notes, if $P' \leq_p P$ and $P' \notin \mathcal{P}$, then $P \notin \mathcal{P}$. (slide 35)
+
+Hence, there does not exist a polynomial time solution for $P$.
+
+\end{answer}
+\end{problem}
+
+
+\pbitem [Question 1 page 505]
+\begin{problem}
+\begin{answer}
+
+Facts given:
+    \begin{itemize}
+        \item INTERVAL SCHEDULING $\in \mathcal{P}$
+        \item INTERVAL SCHEDULING $\leq_P$ INDEPENDENT SET
+        \item INDEPENDENT SET $\in \mathcal{NP}-COMPLETE$
+        \item VERTEX COVER $\in \mathcal{NP}-COMPLETE$
+    \end{itemize}
+    
+\begin{enumerate}
+    \item Is it the case that INTERVAL SCHEDULING $\leq_p$ VERTEX COVER?\\
+    
+    Yes.
+    
+    We know that VERTEX COVER $\in \mathcal{NP}-COMPLETE$, which means VERTEX COVER is also in $\mathcal{NP}-HARD$ and in $\mathcal{NP}$.
+    
+    Since INTERVAL SCHEDULING $\in \mathcal{P}$, INTERVAL SCHEDULING $\in \mathcal{NP}$.
+    
+    Since VERTEX COVER is in $\mathcal{NP}-HARD$, means every problems $B \in \mathcal{NP}, B \leq_P$ VERTEX COVER.
+    
+    Hence, from reasoning above, it follows that INTERVAL SCHEDULING $\leq_p$ VERTEX COVER.\\
+    
+    
+    \item Is it the case that INDEPENDENT SET $\leq_p$ INTERVAL SCHEDULING?\\
+    
+    Unknown, because it would resolve the question of where $\mathcal{P=NP}$.
+    
+    We know that INDEPENDENT SET $\in \mathcal{NP}-COMPLETE$, means INDEPENDENT SET is in $\mathcal{NP}-HARD$ and in $\mathcal{NP}$.
+    
+    We also know that INTERVAL SCHEDULING $\in \mathcal{P}$.
+    
+    From Theorem 1 (slide 40) we discussed in class, if INDEPENDENT SET $\in \mathcal{NP}-COMPLETE$ and INTERVAL SCHEDULING $\in \mathcal{P}$, we will get $\mathcal{P=NP}$, which is unknown.
+
+    Hence, the answer for this is unknown.
+
+\end{enumerate}
+\end{answer}
+
+\newpage
+\pbitem
+\begin{answer}
+
+First we show that BIN PACKING $\in \mathcal{NP}$. 
+
+\begin{itemize}
+    \item State the input to the verification algorithm
+    \begin{itemize}
+        \item a sequence of real numbers $s_1, s_2,\dots s_n \in [0,1]$ and  an integer $K$ (input for BIN PACKING)
+        \item a sequence of real number $c_1, c_2, \dots c_n \in [0,1]$ (certificate)
+    \end{itemize}
+    
+    \item Show that certificate size is polynomial in size to the remaining input
+    
+    Let $d$ be the size of the largest number from $S$ which will take up at most $dn$ space. The number of bits used to represent an integer k is $lgk +2$. Hence the size of the input is $O(dn+lgk)$.
+    
+    Similarly, for the certificate, the size of certificate is at most $dn$ which is also in $O(dn + lgk)$, which is polynomial in the size of the input.
+    
+    \item Give the verification algorithm runs in polynomial time
+    
+    \begin{lstlisting}[numbers=left, mathescape=true]
+    for every element c in C
+        temp = False
+        for every element s in S
+            if c = s
+                temp = True
+            if not temp 
+                return "no"
+    for every element s in S
+        temp = False
+        for every element c in C
+            if c = s
+                temp = True
+            if not temp
+                return "no"
+    total = 0
+    bins = 1
+    for every c in C
+        if (total + c > 1)
+            total = c
+            bins = bins + 1
+        else
+            total = total + c
+    if bins <= K
+        return "yes"
+    else
+        return "no"
+    \end{lstlisting}
+    
+    \item Prove that the verification algorithm runs in polynomial time
+    
+    If $S,k$ is a yes instance of BIN PACKING, then there is a valid $C$ exists. 
+    
+    From line 17, the for loop keep summing up elements starting at $c_1$, when the sum is greater than 1, it overflows a unit-sized bin, we increase the number of bins for other elements in $C$.
+    
+    There is a permutation $C$ os $S$ so that $S$ is divided to smaller groups with at most K bins.
+    
+    We checked for permutation by checking if all elements in $C$ is in $S$ and all elements in $S$ is in $C$. If $C$ is a permutation of $S$, and have at most K bins, and the verification should return "yes".
+    
+    If $S,k$ is a no instance, there does not exist $C$ that will have at most K bins. If $C$ fails to be a permutation of S, we will need more bins to fit all elements in $S$. This means no input $C$ will make the algorithm to return "yes" and always return "no".
+    
+    \item Show that the verification algorithm runs in polynomial time
+    Let $d$ be the size of the largest number in the closed interval [0,1] which will be at least as large as $s_1, s_2, \dots s_n$ or $c_1, c_2, \dots c_n$. We also know that $K$ have size $O(lgK)$.
+    
+    We will trace the code to get the run time
+    \begin{itemize}
+        \item The first for loop we iterate every element of C, we iterate through all elements in S, which has $n$ elements. Hence this takes $n^2$ and number of comparisons of $d$ bits. Other operations takes constant time. Hence, the total time for this is $(d+c_1)n^2$.
+        
+        \item Similarly, the second for loop also takes $(d+c_2)n^2$.
+        
+        \item If $C,S$ are not permutation, the execution ends at line 7 or 14.
+        
+        \item Line 15 and 16 takes constant time $c_3$.
+        
+        \item The next for loop iterate through $n$ elements in C. Other step takes constant time. Hence, this loop takes $c_4d$ time.
+        
+        \item From line 23, the execution takes constant time $c_5$.
+        
+        \item Put them all together, we will have the total time is in $O(dn^2+dn) \in O(d^2n^2+2dnlgK + lgK^2) = O((dn+lgK)^2)$.
+    \end{itemize}
+    
+    Hence, the cost of algorithm s in polynomial time.
+\end{itemize}
+
+
+Next step we need to show BIN PACKING is in $\mathcal{NP}-COMPLETE$.
+
+\begin{itemize}
+    \item Give an algorithm to transform the input to A to an input to B
+    
+     \begin{lstlisting}[numbers=left, mathescape=true]
+transform($m_1,m_2, \dots, m_n)$
+    d = $(m_1+ \dots m_n)/2$
+    S = {s_1, s_2, ... s_n} where $s_1 = m_1/d, s_2 = m_2/d, \dots s_n = m_n/d$
+    for each $s_i$ in S:
+        if $s_i>1$
+            return no
+    return $S$ and $K=2$ 
+     \end{lstlisting}
+    
+    \item Prove that the transformation algorithm runs in polynomial time
+    
+    We can see that the algorithm takes $m_1, \dots m_n$ as inputs, so let $N = max \{m_1 \dots m_n \}$ and the input size is $O(nlgN)$.
+    
+    We trace the code to find the run time:
+    \begin{itemize}
+        \item Computing $d$ at line 2 takes n steps.
+        
+        \item Next, it also takes n steps to create sequence $S$.
+        
+        \item Then we iterate through $S$ to check every elements smaller than 1 which takes n steps.
+        
+    \end{itemize}
+     
+     Put everything together, we see that this algorithm takes $n$ steps and in $O(nlgN)$ which is in polynomial time of input size
+     
+    \item Let $s$ be an input to A and $s'$ the transformed input to B. Prove that $s$ is a yes instance of A if and only if $s'$ is a yes instance of B.
+    
+    Let: PARTITION is A and BIN PACKING is B in this problem.
+    Suppose $s$ be an input to A and $s'$ is int transformed input to B.
+    
+    If $M$ is a no instance of A, we will look at cases as followed:
+    \begin{itemize}
+        \item $sum = \sum^n_{i=1} m_i$ is odd. We cannot find a subset $A$ such that $\sum_{i \in A} m_i = \sum_{i \notin A} m_i$.
+        
+        \item $s_i >1$ for some $1 <i <n$.
+        
+        We calculate $d$ as the $(m_1, \dots m_n)/2$ since $B$ needs to be a sequence of real numbers in [0,1].
+        
+        Then we have a sequence $S$ with $s_i = m_i / ((m_1 + m_2 + \dots + m_n)/2)$ which means $m_i = s_i(m_1+m_2+\dots+m_n)/2$. Since $s_i > 1$ and $m_i$ is an integer, $s_i \geq 2$. Then $m_i \geq m_1 + m_2 + \dots m_n$
+        
+        If this is the case, there would be no partition so that $\sum_{i\in A}m_i = \sum_{i \notin A} m_i$. Hence $s_i > 1$ is false.
+        
+        \item $s_i \leq 1$. We can return a sequence $S$. Let's look at:
+        
+        $$\sum^n_{i=1} s_i = \frac{m_1}{(m_1+\dots+m_n)/2}+\dots + \frac{m_n}{(m_1+\dots+m_n)/2}$$
+        
+        $$= \frac{m_ 1+ \dots + m_n}{(m_1+\dots+m_n)/2}$$
+        
+        $$=2$$
+        
+        This shows that all elements in $S$ sums up to 2, and guarantee that all elements will fit in 2 bins. 
+        
+        However, $s'$ is a no instance, this means there are no subsets of $A$ that $\sum_{i \in A} s_i = \sum_{i \notin A} s_i= 1$.
+        
+        This also means there are no subsets in $A$ so that $\sum_{i \in A} m_i = \sum_{i \notin A} m_i$ which is true when $M$ is a no instance of PARTITION.
+        
+    \end{itemize}
+
+    If $M$ is a yes instance of A.
+    
+    \begin{itemize}
+        \item There is subsets in A such that $\sum_{i \in A} s_i = \sum_{i \notin A} s_i= 1$
+        
+        \item We will then return $S$ and $K =2$.
+        This means there exists $\sum_{i \in A} m_i = \sum_{i \notin A} m_i$, which is a yes instance of $M$.
+        
+        \item Thus, we can put elements of $S$ in at most $K = 2 $ unit-sized bins. Then $S,K$ is a yes instance of $B$
+    \end{itemize}
+    
+    We have shown 2 ways. $M$ is a yes instance of PARTITION if and only if $S, K$ is a yes instance of BIN PACKING. 
+    
+    
+    
+\end{itemize}
+\end{answer}
+
+\end{problem}
+
+\end{problemlist}
+
+
+\end{document}
